@@ -1,0 +1,4 @@
+#!/bin/sh
+IFS=""
+mp3iconvg
+zenity --info --text='ok'
