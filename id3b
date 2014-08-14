@@ -1,0 +1,3 @@
+#!/bin/sh
+IFS=""
+id3 -l $1 | iconv -f big5hkscs -t utf8 -c

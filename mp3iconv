@@ -1,0 +1,4 @@
+#!/bin/sh
+IFS=""
+find . -execdir mid3iconv -e BIG5HKSCS "{}" \;
+

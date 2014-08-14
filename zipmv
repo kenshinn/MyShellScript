@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ $# = 1 ] ; then  code=$1 ;
+else code='big5';
+fi
+echo $code
+convmv -r -f $code -t utf8 --nosmart --notest *
+

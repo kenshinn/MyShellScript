@@ -1,0 +1,33 @@
+#!/bin/bash
+# require:
+# shntool,cuetools,eyeD3
+
+#Get the filenames
+filetype="$1" # ape or flac
+cuefile="$2"
+bigfile="$3"
+
+#Other variables
+tracks=$(cueprint -d '%N' "$cuefile")
+
+#Output general file information
+cueprint -d '%P - %T\n' "$cuefile"
+echo "Total number of tracks: " "$tracks"
+
+#Split this bitch directly into MP3 files
+#cust='cust ext=mp3 lame -h -V0 -b 320 --vbr-new - %f' # change quality here
+namestring="%n-%p-%t" # performer - album - tracknumber - title
+shnsplit -i "$filetype" -f "$cuefile" -o "flac" -t "$namestring" "$bigfile"
+
+#ID3 tag MP3 files
+i=1
+while [ $i -le $tracks ]; do
+    artist[$i]=$(cueprint -n$i -t '%P' "$cuefile")
+    album[$i]=$(cueprint -n$i -t '%T' "$cuefile")
+    tracknum[$i]=$(cueprint -n$i -t '%02n' "$cuefile")
+    title[$i]=$(cueprint -n$i -t '%t' "$cuefile")
+    f="${artist[$i]}"-"${album[$i]}"-"${tracknum[$i]}"-"${title[$i]}".mp3
+    eyeD3 --no-color --set-encoding=utf8 -a "${artist[$i]}" -A "${album[$i]}" -n "${tracknum[$i]}" -t "${title[$i]}" "$f"
+    i=$[$i+1]
+done
+
