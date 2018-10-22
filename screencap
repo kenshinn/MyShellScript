@@ -1,0 +1,6 @@
+#/bin/sh
+tt=`adb shell "date +%s"`
+adb shell screencap /sdcard/$tt.png
+adb pull /sdcard/$tt.png
+adb shell rm /sdcard/$tt.png
+open $tt.png
